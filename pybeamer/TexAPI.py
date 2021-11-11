@@ -10,8 +10,9 @@ __all__ = [ 'escape_decode', 'TexException', 'TexSessionStream', 'PDFTexOutput'
 # TODO Create PhantomSection
 from future.utils import with_metaclass
 import os, sys, traceback
-from pybeamer.core import Logger, LoggingLevel, retrieve_kw, ensureExtension, Holder
+from pybeamer.core import Logger, LoggingLevel, retrieve_kw, ensureExtension, Holder, traverse
 from pybeamer.core.LimitedTypeList import LimitedTypeList, _LimitedTypeList____init__
+import subprocess
 
 
 def _writeline(self, *l, **kw ):
@@ -205,11 +206,13 @@ class PDFTexOutput( TexSessionStream ):
     latexCode = self.file.getvalue()
     try:
       self.file.close()
-      with open( self.outputFile, 'w' ) as f:
+      print(self.outputFile)
+      with open( self.outputFile.replace('pdf','tex'), 'w' ) as f:
         f.write( str(latexCode) )
-      os.system( 'pdflatex %s &> mylog.log'%( self.outputFile ) )
-      os.system( 'pdflatex %s &> mylog.log'%( self.outputFile ) )
-      for ext in ['aux','log','out','snm','toc','nav']:
+      subprocess.check_call(['pdflatex', self.outputFile.replace('pdf','tex') ],stdout=subprocess.DEVNULL)
+      
+      
+      for ext in ['aux','log','out','snm','toc', 'nav']:
         try:
           os.system('rm *.%s'% ext)
         except:
@@ -559,7 +562,6 @@ class OverPic( TexObject ):
     graphics_option += ',' if moreGraphicsOptions else ''
     graphics_option += ','.join( [str(key) + ('=' + str(val) if val else '') for key, val in moreGraphicsOptions.items() ] )
     self.graphics_option = graphics_option
-    from Gaugi.utilities import traverse
     try:
       _, _, _, _, depth = traverse(texts ).next()
     except (GeneratorExit, StopIteration):
