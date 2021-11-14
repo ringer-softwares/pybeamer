@@ -132,7 +132,7 @@ def _getConsoleHandler():
   ch.setFormatter(_getFormatter())
   return ch
 
-
+console = _getConsoleHandler()
 
 
 class Logger( object ):
@@ -178,7 +178,7 @@ class Logger( object ):
     logger = logging.getLogger( logName )
     handlers = logger.handlers
     # add ch to logger
-    logger.addHandler(_getConsoleHandler())
+    logger.addHandler(console)
     logger.setLevel( logDefaultLevel )
     return logger
 

@@ -219,7 +219,6 @@ class BeamerMultiFigureSlide( BeamerSlide ):
     elif nDivWidth * nDivHeight != len(paths):
       paths += [None] * ( ( nDivWidth * nDivHeight ) - len(paths) )
     try:
-      from Gaugi.utilities import traverse
       _, _, _, _, depth = next(traverse( texts ))
     except (GeneratorExit, StopIteration):
       depth = 0

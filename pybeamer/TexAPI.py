@@ -206,7 +206,6 @@ class PDFTexOutput( TexSessionStream ):
     latexCode = self.file.getvalue()
     try:
       self.file.close()
-      print(self.outputFile)
       with open( self.outputFile.replace('pdf','tex'), 'w' ) as f:
         f.write( str(latexCode) )
       subprocess.check_call(['pdflatex', self.outputFile.replace('pdf','tex') ],stdout=subprocess.DEVNULL)
