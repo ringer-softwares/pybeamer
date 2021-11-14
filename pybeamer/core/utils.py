@@ -1,5 +1,6 @@
 
-__all__ = ['retrieve_kw', 'checkForUnusedVars', 'ensureExtension', 'Holder', 'traverse']
+__all__ = ['retrieve_kw', 'checkForUnusedVars', 'ensureExtension', 'checkExtension', 
+           'Holder', 'traverse']
 
 import numpy as np
 
@@ -23,6 +24,14 @@ def checkForUnusedVars(d, fcn = None):
 
 def ensureExtension( filename, extension ):
     return (filename + '.' + extension) if not filename.endswith(extension) else filename
+
+
+def checkExtension( filename, extension ):
+  extensions = extension.split('|')
+  for ext in extensions:
+    if filename.endswith(ext):
+      return True
+  return False
 
 
 
